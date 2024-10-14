@@ -457,9 +457,6 @@ class StreamHandler(client.SubscribeToIoTCoreStreamHandler):
             #s3_client = boto3.client('s3')
             # Download the file from S3
             local_path = f'{audioPath}/{key}'
-            #s3_client.download_file(bucket, key, local_path)
-            #topic_name = event.message.topic_name
-                    #message = json.loads(event.message.payload.decode())
             print(f"Received message: {payload}")
             #audio_file_path=handle_message(json.loads(message.json_message['message']))
             mel = compute_features(local_path)
@@ -525,33 +522,6 @@ def publish_result(pred):
 if __name__ == "__main__":
     all_files=os.listdir(audioPath)
 
-## updated code for lambda
-
-
-
-    #     # Subscribe to the local topic
-    # topic = "onnx-asr/inference/trigger"
-    # request = SubscribeToIoTCoreRequest(topic_name=topic, qos="AT_LEAST_ONCE")
-
-    # handler = MyStreamHandler()
-    # operation = ipc_client.subscribe_to_iot_core(request, handler)
-
-    # # Activate the subscription
-    # operation.activate()
-
-    # # Run the client loop to keep the script active
-    # try:
-    #     while True:
-    #         pass  # This loop keeps the process running to handle incoming messages
-    # except KeyboardInterrupt:
-    #     print("Interrupted")
-    # finally:
-    #     ipc_client.disconnect()
-
-
-
-
-
     topic = "audioDevice/data"
     qos = QOS.AT_MOST_ONCE
 
@@ -568,94 +538,3 @@ if __name__ == "__main__":
     while True:
         time.sleep(100)
                     
-    # To stop subscribing, close the operation stream.
-    #operation.close()
-
-
-
-
-
-
-    #     # Subscribe to the topic where the Lambda function will publish trigger messages
-    # subscribe_request = SubscribeToIoTCoreRequest()
-    # subscribe_request.topic_name = "onnx-asr/inference/trigger"
-    # response_stream = ipc_client.subscribe_to_iot_core(subscribe_request)
-
-    # # Process messages as they arrive
-    # for message in response_stream:
-    #     if isinstance(message, SubscriptionResponseMessage):
-    #         audio_file_path=handle_message(json.loads(message.json_message['message']))
-
-
-
-    #wav_files = [file for file in all_files if file.lower().endswith('.wav')]
-    
-    # for file in wav_files:
-    #     file_path = os.path.join(audioPath, file)
-    #     print(file_path)
-    #     #print(file)
-    #     #print(file)
-    #     request = PublishToIoTCoreRequest()
-    #     request.topic_name = topic
-
-
-    # mel = compute_features(audio_file_path)
-    # model = OnnxModel(encoder,decoder)
-
-    # pred=main()
-    #     # Create a PublishRequest object
-    # publish_request = PublishRequest(
-    #     topic_name="onnx-asr/inference/result",
-    #     qos="0",  # Quality of Service level (0, 1, or 2)
-    #     payload=json.dumps(pred).encode('utf-8')  # Message payload
-    # )
-    # # Publish the message
-    # ipc_client.publish(publish_request)
-    # print("Inference result published to MQTT.")
-
-
-
-
-
-    #     # Publish the inference result to an MQTT topic
-    # publish_request = PublishToIoTCoreRequest(
-    #     topic_name="onnx-asr/inference/result",
-    #     qos="0",
-    #     payload=json.dumps(pred).encode('utf-8')
-    # )
-    # ipc_client.publish_to_iot_core(publish_request)
-    # print("Inference result published to MQTT.")
-
-
-
-
-    
-    # wav_files = [file for file in all_files if file.lower().endswith('.wav')]
-    
-    # for file in wav_files:
-    #     file_path = os.path.join(audioPath, file)
-    #     print(file_path)
-    #     #print(file)
-    #     #print(file)
-    #     request = PublishToIoTCoreRequest()
-    #     request.topic_name = topic
-
-
-    #     mel = compute_features(file_path)
-    #     model = OnnxModel(encoder,decoder)
-
-    #     pred=main()
-        
-
-        
-    #     #pred = predict(modelPath, labelsPath, image)
-    #     request.payload = pred.encode()
-    #     request.qos = qos
-    #     operation = ipc_client.new_publish_to_iot_core()
-    #     operation.activate(request)
-    #     future_response = operation.get_response().result(timeout=5)
-    #     print("successfully published message: ", future_response)
-    #     time.sleep(5)
-    
-    
-    #main()
